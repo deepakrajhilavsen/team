@@ -9,6 +9,7 @@ const CustomError = require("./Utils/customError");
 const { NOT_FOUND } = require("./Utils/constants");
 const globalErrorHandler = require("./Utils/globalErrorHandler");
 const authRouter = require("./auth/router/routes");
+const XSSValidateMW = require("./middlewares/inputValidator");
 
 credentials(passport);
 
@@ -22,6 +23,8 @@ app.use(
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
+
+app.use(XSSValidateMW);
 
 app.use(authRouter);
 
