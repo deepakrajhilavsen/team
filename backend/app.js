@@ -4,7 +4,7 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const passport = require("passport");
-const { credentials } = require("./middlewares/passport");
+const { credentials } = require("./middlewares/passport-config");
 const CustomError = require("./Utils/customError");
 const { NOT_FOUND } = require("./Utils/constants");
 const globalErrorHandler = require("./Utils/globalErrorHandler");
@@ -38,7 +38,7 @@ app.use(globalErrorHandler);
 mongoose
   .connect(process.env.MONGO_TEST_URI)
   .then(() => {
-    app.listen(process.env.PORT || 5000, () => {
+    app.listen(process.env.PORT, () => {
       console.log("Server started and db connected");
     });
   })

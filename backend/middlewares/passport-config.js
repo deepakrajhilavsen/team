@@ -2,6 +2,7 @@ require("dotenv").config();
 const LocalStrategy = require("passport-local").Strategy;
 const bcrypt = require("bcryptjs");
 const { Strategy: BearerStrategy } = require("passport-http-bearer");
+const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const jwt = require("jsonwebtoken");
 const { UNAUTHORIZED, FORBIDDEN } = require("../Utils/constants");
 const findUser = require("../auth/db/findUser");
@@ -13,14 +14,14 @@ const credentials = async (passport) => {
       { usernameField: "username", passwordField: "password", session: false },
       async (username, password, done) => {
         const user = await findUser(username);
-        if (JSON.stringify(user) === "{}") {
+        if (!user) {
           return done(
             new CustomError(UNAUTHORIZED.message, UNAUTHORIZED.status)
           );
         }
         const passwordMatch = await bcrypt.compare(password, user.hash);
         if (passwordMatch) {
-          return done(null, { id: user.id, username: user.username });
+          return done(null, user);
         } else {
           return done(
             new CustomError(UNAUTHORIZED.message, UNAUTHORIZED.status)
@@ -44,6 +45,25 @@ const credentials = async (passport) => {
         return done(new CustomError(UNAUTHORIZED.message, UNAUTHORIZED.status));
       }
     })
+  );
+
+  passport.use(
+    new GoogleStrategy(
+      {
+        clientID: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        callbackURL: process.env.GOOGLE_CALL_BACK_URL,
+      },
+      async (accessToken, refreshToken, profile, done) => {
+        try {
+          console.log(profile);
+        } catch (err) {
+          return done(
+            new CustomError(UNAUTHORIZED.message, UNAUTHORIZED.status)
+          );
+        }
+      }
+    )
   );
 };
 

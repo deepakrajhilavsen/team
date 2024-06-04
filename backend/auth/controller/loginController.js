@@ -1,5 +1,6 @@
 const asyncErrorHandler = require("../../Utils/asyncErrorHandler");
 const { REGISTER_SUCCESS, LOGIN_SUCCESS } = require("../../Utils/constants");
+const googleSignInService = require("../services/googleSignInService");
 const loginService = require("../services/loginService");
 const registerService = require("../services/registerService");
 
@@ -41,4 +42,17 @@ const loginUser = asyncErrorHandler(async (req, res, next) => {
   });
 });
 
-module.exports = { registerUser, loginUser };
+const googleSignIn = asyncErrorHandler(async (req, res, next) => {
+  await googleSignInService((err, result) => {
+    if (err) {
+      return next(err);
+    }
+    res.status(LOGIN_SUCCESS.status).send({
+      message: LOGIN_SUCCESS.message,
+      accessToken: result.accessToken,
+      user: result.user,
+    });
+  });
+});
+
+module.exports = { registerUser, loginUser, googleSignIn };

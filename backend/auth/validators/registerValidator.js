@@ -13,7 +13,7 @@ const registerValidator = Joi.object().keys({
       "string.email": `Enter valid email id`,
       "string.empty": `Email cannot be empty`,
       "any.reqiured": `Email is required`,
-      "any.invalid": `Invalid Domain`
+      "any.invalid": `Invalid Domain`,
     }),
 
   password: Joi.string()
@@ -43,6 +43,7 @@ const registerValidator = Joi.object().keys({
       })
     )
     .min(2)
+    .max(10)
     .required()
     .messages({
       "array.min": `There needs to be a minimum of two skills`,

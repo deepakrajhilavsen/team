@@ -4,8 +4,6 @@ const registerValidator = require("../validators/registerValidator");
 const hashPassword = require("../utils/hashPassword");
 const createUser = require("../db/createUser");
 const generateToken = require("./generateToken");
-const CustomError = require("../../Utils/customError");
-const { UNAUTHORIZED } = require("../../Utils/constants");
 
 const registerService = async (
   username,
@@ -32,10 +30,8 @@ const registerService = async (
       res,
       async (err) => {
         if (err) {
-          callback(
-            new CustomError(UNAUTHORIZED.message, UNAUTHORIZED.status),
-            null
-          );
+          callback(err, null);
+          return;
         }
         const username = req.user.username;
         const id = req.user.id;
