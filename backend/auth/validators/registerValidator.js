@@ -1,7 +1,12 @@
 const Joi = require("joi");
-const emailValidator = require("./emailValidator");
+const emailValidator = require("./customValidators");
 
 const registerValidator = Joi.object().keys({
+  name: Joi.string().min(1).max(255).required().messages({
+    "string.empty": `Name cannot be empty`,
+    "any.required": `Name is required`,
+  }),
+
   username: Joi.string()
     .required()
     .custom(emailValidator)

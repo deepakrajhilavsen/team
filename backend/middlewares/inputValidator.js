@@ -12,6 +12,8 @@ const noSQLPatterns = [
   /eval\(|db\.\w+\.find\(|db\.\w+\.update\(|new\s+Function\(|\bfunction\s*\(.*?\)\s*{/,
 ];
 
+const urlWhiteList = [/^\/auth\/google$/, /^\/auth\/google\/callback.*$/];
+
 const checkPatterns = (data, patterns) => {
   return patterns.some((pattern) => pattern.test(data));
 };
@@ -20,7 +22,7 @@ const crossSiteScriptValidator = (data, key) => {
   try {
     const schema = {
       type: ["string", "number"],
-      pattern: "^(?!.*[$()<>]).*$",
+      pattern: "^(?!.*[$()<>!`~]).*$",
     };
 
     const validator = new Validator();
@@ -54,6 +56,9 @@ const XSSValidateObj = (object) => {
 
 const XSSValidateMW = (req, res, next) => {
   try {
+    if (urlWhiteList.some((pattern) => pattern.test(req.originalUrl))) {
+      return next();
+    }
     const { body = {}, params = {}, query = {}, headers = {} } = req;
     XSSValidateObj(body);
     XSSValidateObj(params);

@@ -17,6 +17,7 @@ const registerService = async (
 ) => {
   if (
     globalValidator(registerValidator, {
+      name,
       username,
       password,
       mobile_no,

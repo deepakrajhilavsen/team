@@ -43,7 +43,7 @@ const loginUser = asyncErrorHandler(async (req, res, next) => {
 });
 
 const googleSignIn = asyncErrorHandler(async (req, res, next) => {
-  await googleSignInService((err, result) => {
+  await googleSignInService(req, res, (err, result) => {
     if (err) {
       return next(err);
     }

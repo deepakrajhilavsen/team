@@ -1,9 +1,14 @@
 const mongoose = require("mongoose");
 const passportLocalMongoose = require("passport-local-mongoose");
 const findOrCreate = require("mongoose-findorcreate");
+const experienceSchema = require("../schema/experienceSchema");
+const qualificationSchema = require("../schema/qualificationSchema");
 
 const userSchema = new mongoose.Schema({
-  name: String,
+  name: {
+    type: String,
+    required: true,
+  },
   username: {
     type: String,
     unique: true,
@@ -17,16 +22,30 @@ const userSchema = new mongoose.Schema({
   },
   hash: {
     type: String,
-    required: true,
   },
   mobile_no: {
     type: Number,
     trim: true,
-    required: true,
+  },
+  linkedIn: {
+    type: String,
+  },
+  qualifications: qualificationSchema,
+  jobRoles: {
+    type: [String],
   },
   skills: {
     type: [String],
-    required: true,
+  },
+  experience: experienceSchema,
+  preferredLocations: {
+    type: [String],
+  },
+  profilePhoto: {
+    type: String,
+  },
+  resume: {
+    type: String,
   },
   googleId: {
     type: String,

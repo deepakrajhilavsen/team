@@ -7,6 +7,7 @@ const jwt = require("jsonwebtoken");
 const { UNAUTHORIZED, FORBIDDEN } = require("../Utils/constants");
 const findUser = require("../auth/db/findUser");
 const CustomError = require("../Utils/customError");
+const findOrCreateGoogleUser = require("../auth/db/findOrCreateGoogleUser");
 
 const credentials = async (passport) => {
   passport.use(
@@ -14,7 +15,7 @@ const credentials = async (passport) => {
       { usernameField: "username", passwordField: "password", session: false },
       async (username, password, done) => {
         const user = await findUser(username);
-        if (!user) {
+        if (!user || (user.googleId && !user.hash)) {
           return done(
             new CustomError(UNAUTHORIZED.message, UNAUTHORIZED.status)
           );
@@ -56,7 +57,8 @@ const credentials = async (passport) => {
       },
       async (accessToken, refreshToken, profile, done) => {
         try {
-          console.log(profile);
+          const user = await findOrCreateGoogleUser(profile);
+          return done(null, user);
         } catch (err) {
           return done(
             new CustomError(UNAUTHORIZED.message, UNAUTHORIZED.status)
