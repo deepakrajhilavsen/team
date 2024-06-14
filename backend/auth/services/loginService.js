@@ -1,7 +1,7 @@
 const passport = require("passport");
 const globalValidator = require("../../Utils/globalValidators");
 const loginValidator = require("../validators/loginValidator");
-const generateToken = require("./generateToken");
+const generateToken = require("../utils/generateToken");
 
 const loginService = async (username, password, req, res, callback) => {
   if (
@@ -22,9 +22,6 @@ const loginService = async (username, password, req, res, callback) => {
         const sanitizedUser = {
           _id: user._id,
           username: user.username,
-          name: user.name,
-          mobile_no: user.mobile_no,
-          skills: user.skills,
         };
         const accessToken = generateToken(user._id, user.username);
         const result = { sanitizedUser, accessToken };

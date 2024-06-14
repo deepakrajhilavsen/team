@@ -1,23 +1,47 @@
 require("dotenv").config();
 const LocalStrategy = require("passport-local").Strategy;
 const bcrypt = require("bcryptjs");
-const { Strategy: BearerStrategy } = require("passport-http-bearer");
+const { Strategy: JwtStrategy, ExtractJwt } = require("passport-jwt");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
-const jwt = require("jsonwebtoken");
-const { UNAUTHORIZED, FORBIDDEN } = require("../Utils/constants");
-const findUser = require("../auth/db/findUser");
+const {
+  UNAUTHORIZED,
+  FORBIDDEN,
+  GOOGLE_ID_ALREADY_EXIST,
+} = require("../Utils/constants");
+const findAuth = require("../auth/db/findAuth");
 const CustomError = require("../Utils/customError");
-const findOrCreateGoogleUser = require("../auth/db/findOrCreateGoogleUser");
+const findOrCreateGoogleAuth = require("../auth/db/findOrCreateGoogleAuth");
+
+const tokenExtractor = (req) => {
+  if (req && req.cookies) {
+    const accessToken = req.cookies["accessToken"];
+    return accessToken;
+  }
+  return null;
+};
+
+const options = {
+  jwtFromRequest: ExtractJwt.fromExtractors([tokenExtractor]),
+  secretOrKey: process.env.SECRET,
+};
 
 const credentials = async (passport) => {
   passport.use(
     new LocalStrategy(
       { usernameField: "username", passwordField: "password", session: false },
       async (username, password, done) => {
-        const user = await findUser(username);
-        if (!user || (user.googleId && !user.hash)) {
+        const user = await findAuth(username);
+        if (!user) {
           return done(
             new CustomError(UNAUTHORIZED.message, UNAUTHORIZED.status)
+          );
+        }
+        if (user.googleId && !user.hash) {
+          return done(
+            new CustomError(
+              GOOGLE_ID_ALREADY_EXIST.message,
+              GOOGLE_ID_ALREADY_EXIST.status
+            )
           );
         }
         const passwordMatch = await bcrypt.compare(password, user.hash);
@@ -33,11 +57,11 @@ const credentials = async (passport) => {
   );
 
   passport.use(
-    new BearerStrategy(async (token, done) => {
+    new JwtStrategy(options, (jwt_payload, done) => {
+      console.log(jwt_payload);
       try {
-        const decoded = jwt.verify(token, process.env.SECRET);
-        if (decoded.exp && new Date().getTime() < decoded.exp * 1000) {
-          const user = { id: decoded.id, username: decoded.username };
+        if (jwt_payload) {
+          const user = jwt_payload;
           return done(null, user);
         } else {
           return done(new CustomError(FORBIDDEN.message, FORBIDDEN.status));
@@ -57,12 +81,12 @@ const credentials = async (passport) => {
       },
       async (accessToken, refreshToken, profile, done) => {
         try {
-          const user = await findOrCreateGoogleUser(profile);
+          const user = await findOrCreateGoogleAuth(profile);
+          user.profilePhoto = profile.photos[0].value;
+          user.name = profile.displayName;
           return done(null, user);
         } catch (err) {
-          return done(
-            new CustomError(UNAUTHORIZED.message, UNAUTHORIZED.status)
-          );
+          return done(err);
         }
       }
     )

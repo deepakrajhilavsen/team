@@ -2,30 +2,18 @@ const passport = require("passport");
 const globalValidator = require("../../Utils/globalValidators");
 const registerValidator = require("../validators/registerValidator");
 const hashPassword = require("../utils/hashPassword");
-const createUser = require("../db/createUser");
-const generateToken = require("./generateToken");
+const createAuth = require("../db/createAuth");
+const generateToken = require("../utils/generateToken");
 
-const registerService = async (
-  username,
-  name,
-  password,
-  mobile_no,
-  skills,
-  req,
-  res,
-  callback
-) => {
+const registerService = async (username, password, req, res, callback) => {
   if (
     globalValidator(registerValidator, {
-      name,
       username,
       password,
-      mobile_no,
-      skills,
     })
   ) {
     const hash = await hashPassword(password);
-    const newUser = await createUser(username, name, hash, mobile_no, skills);
+    const newUser = await createAuth(username, hash);
     passport.authenticate("local", { session: false })(
       req,
       res,
@@ -39,10 +27,7 @@ const registerService = async (
         const accessToken = generateToken(id, username);
         const user = {
           username: newUser.username,
-          name: newUser.name,
           _id: id,
-          mobile_no: newUser.mobile_no,
-          skills: newUser.skills,
         };
         const result = {
           user: user,

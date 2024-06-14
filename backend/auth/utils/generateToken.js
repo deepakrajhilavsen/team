@@ -5,9 +5,9 @@ const generateToken = (id, username) => {
     {
       id: id,
       username: username,
-      exp: Math.floor(Date.now() / 1000) + 60 * 60,
     },
-    process.env.SECRET
+    process.env.SECRET,
+    { expiresIn: "1h" }
   );
 
   return accesToken;

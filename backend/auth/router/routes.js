@@ -4,18 +4,18 @@ const {
   registerUser,
   loginUser,
   googleSignIn,
-} = require("../controller/loginController");
-const verifyToken = require("../../middlewares/verifyToken");
+  verifyToken,
+} = require("../controller/authController");
 
 const authRouter = express.Router();
 
-authRouter.post("/auth/register", registerUser);
-authRouter.post("/auth/login", loginUser);
-authRouter.post("/auth/verify-token", verifyToken);
+authRouter.post("/register", registerUser);
+authRouter.post("/login", loginUser);
+authRouter.post("/verify-token", verifyToken);
 authRouter.get(
-  "/auth/google",
+  "/google",
   passport.authenticate("google", { scope: ["profile", "email"] })
 );
-authRouter.get("/auth/google/callback", googleSignIn);
+authRouter.get("/google/callback", googleSignIn);
 
 module.exports = authRouter;

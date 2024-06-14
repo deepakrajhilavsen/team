@@ -1,4 +1,9 @@
 module.exports = {
+  ROLES: {
+    user: "user",
+    recruiter: "recruiter",
+  },
+
   // 2XX status
 
   LOGIN_SUCCESS: {
@@ -37,14 +42,19 @@ module.exports = {
     message: "Email is already taken",
   },
 
-  MOBILE_NUMBER_ALREADY_EXIST: {
+  GOOGLE_ID_ALREADY_EXIST: {
     status: 400,
-    message: "Mobile number is already taken",
+    message: "Email already exist as google id",
   },
 
   INVALID_ID_VALUE: {
     status: 400,
     message: "Invalid id",
+  },
+
+  INVALID_FORMAT: {
+    status: 400,
+    message: "Invalid file format",
   },
 
   UNAUTHORIZED: {

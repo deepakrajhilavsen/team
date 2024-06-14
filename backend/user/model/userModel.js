@@ -1,27 +1,18 @@
 const mongoose = require("mongoose");
 const passportLocalMongoose = require("passport-local-mongoose");
 const findOrCreate = require("mongoose-findorcreate");
-const experienceSchema = require("../schema/experienceSchema");
 const qualificationSchema = require("../schema/qualificationSchema");
+const experienceSchema = require("../schema/experienceSchema");
 
 const userSchema = new mongoose.Schema({
+  authId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Auth",
+    required: true,
+  },
   name: {
     type: String,
     required: true,
-  },
-  username: {
-    type: String,
-    unique: true,
-    trim: true,
-    lowercase: true,
-    required: true,
-    match: [
-      /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-      "Please fill a valid email address",
-    ],
-  },
-  hash: {
-    type: String,
   },
   mobile_no: {
     type: Number,
@@ -46,11 +37,6 @@ const userSchema = new mongoose.Schema({
   },
   resume: {
     type: String,
-  },
-  googleId: {
-    type: String,
-    unique: true,
-    sparse: true,
   },
 });
 

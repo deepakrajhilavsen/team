@@ -2,10 +2,10 @@ const Joi = require("joi");
 const emailValidator = require("./customValidators");
 
 const registerValidator = Joi.object().keys({
-  name: Joi.string().min(1).max(255).required().messages({
-    "string.empty": `Name cannot be empty`,
-    "any.required": `Name is required`,
-  }),
+  // name: Joi.string().min(1).max(255).required().messages({
+  //   "string.empty": `Name cannot be empty`,
+  //   "any.required": `Name is required`,
+  // }),
 
   username: Joi.string()
     .required()
@@ -35,25 +35,25 @@ const registerValidator = Joi.object().keys({
       "any.required": `Password is required`,
     }),
 
-  mobile_no: Joi.string()
-    .regex(/^[0-9]{10}$/)
-    .required()
-    .messages({ "string.pattern.base": `Mobile number must be 10 digits.` }),
+  // mobile_no: Joi.string()
+  //   .regex(/^[0-9]{10}$/)
+  //   .required()
+  //   .messages({ "string.pattern.base": `Mobile number must be 10 digits.` }),
 
-  skills: Joi.array()
-    .items(
-      Joi.string().min(1).max(255).required().messages({
-        "string.empty": `Skill cannot be empty`,
-        "any.required": `Skill is required`,
-      })
-    )
-    .min(2)
-    .max(10)
-    .required()
-    .messages({
-      "array.min": `There needs to be a minimum of two skills`,
-      "any.required": `Skill cannot be empty`,
-    }),
+  // skills: Joi.array()
+  //   .items(
+  //     Joi.string().min(1).max(255).required().messages({
+  //       "string.empty": `Skill cannot be empty`,
+  //       "any.required": `Skill is required`,
+  //     })
+  //   )
+  //   .min(2)
+  //   .max(10)
+  //   .required()
+  //   .messages({
+  //     "array.min": `There needs to be a minimum of two skills`,
+  //     "any.required": `Skill cannot be empty`,
+  //   }),
 });
 
 module.exports = registerValidator;

@@ -1,5 +1,5 @@
 const passport = require("passport");
-const generateToken = require("./generateToken");
+const generateToken = require("../utils/generateToken");
 
 const googleSignInService = async (req, res, callback) => {
   passport.authenticate("google", { session: false })(

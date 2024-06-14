@@ -4,12 +4,13 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const passport = require("passport");
-const { credentials } = require("./middlewares/passport-config");
+const { credentials } = require("./config/passport.config");
 const CustomError = require("./Utils/customError");
 const { NOT_FOUND } = require("./Utils/constants");
 const globalErrorHandler = require("./Utils/globalErrorHandler");
 const authRouter = require("./auth/router/routes");
 const XSSValidateMW = require("./middlewares/inputValidator");
+const cookieParser = require("cookie-parser");
 
 credentials(passport);
 
@@ -23,10 +24,11 @@ app.use(
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cookieParser());
 
 app.use(XSSValidateMW);
 
-app.use(authRouter);
+app.use("/auth", authRouter);
 
 app.all("*", (req, res, next) => {
   const error = new CustomError(NOT_FOUND.message, NOT_FOUND.status);
