@@ -86,9 +86,9 @@ const Jobs = () => {
             <span className='flex justify-between items-center gap-4' style={{ alignItems: 'center' }}>
               <h1 className='text-[16px] font-semibold text-textColor group-hover:text-white'>{title}</h1>
               
-                <span className='flex items-center'> {/* Modified line */}
-  <BiTimeFive /> {/* Time icon */}
-  <span className='text-[13px] font-semibold ml-2'>{time}</span> {/* Added "Now" text */}
+                <span className='flex items-center'> 
+  <BiTimeFive /> 
+  <span className='text-[13px] font-semibold ml-2'>{time}</span> 
 
 
               </span>

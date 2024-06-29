@@ -69,7 +69,7 @@ const Profile = () => {
 
   return (
     <div className="profile-page flex p-8 bg-gray-100 flex-col items-center">
-      {/* Profile Picture */}
+      
       <TextInput
         label="Profile Picture"
         name="profilePhoto"
@@ -77,7 +77,7 @@ const Profile = () => {
         onValueChange={handleChange}
       />
 
-      {/* Personal Information */}
+      
       <TextInput
         label="Name"
         value={userData.name}
@@ -107,7 +107,7 @@ const Profile = () => {
         placeholder="Enter Linked In profile"
       />
 
-      {/* Qualification */}
+      
       <DropdownInput
         label="Qualification"
         name="qualifications.qualification"
@@ -123,8 +123,6 @@ const Profile = () => {
           placeholder="Enter qualification details"
         />
       )}
-
-      {/* Skills */}
       <DropdownInput
         label="Skills"
         name="skills"
@@ -169,8 +167,6 @@ const Profile = () => {
           </div>
         </div>
       )}
-
-      {/* Preferred Job Role */}
       <TextInput
         label="Preferred Job Role"
         name="jobRole"
@@ -178,8 +174,6 @@ const Profile = () => {
         onValueChange={handleChange}
         placeholder="Enter Job Role"
       />
-
-      {/* Preferred Job Location */}
       <DropdownInput
         label="Preferred Job Location"
         name="preferredLocations"
@@ -187,8 +181,6 @@ const Profile = () => {
         onValueChange={handleChange}
         options={["California", "New York", "Texas", "Washington", "Others"]}
       />
-
-      {/* Experience */}
       <DropdownInput
         label="Experience"
         name="experience.experience"
@@ -196,8 +188,6 @@ const Profile = () => {
         onValueChange={handleChange}
         options={["Fresher", "Student", "Experienced"]}
       />
-
-      {/* Job History */}
       <div className="mb-4">
         <label className="block text-sm font-medium text-gray-900">
           Job History

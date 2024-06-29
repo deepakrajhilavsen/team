@@ -1,4 +1,3 @@
-// userActions.js
 
 import * as types from '../../utils/constants/userConstants';
 

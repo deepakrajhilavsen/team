@@ -17,7 +17,7 @@ const Search = () => {
               <option value="location">Location</option>
               <option value="companyName">Company Name</option>
             </select>
-           {/* <IoClose className='text-[30px] text-[#545757] hover:text-textColor icon' /> */}
+           
           </div>
            <div className='secdiv flex items-center gap-10 justify-center'>
             <div className='singlesearch flex items-center gap-2'>

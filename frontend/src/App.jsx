@@ -1,11 +1,11 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Provider } from "react-redux";
-import store from "./Store/store"; // Adjusted import path to the store folder
+import store from "./Store/store"; 
 import Home from "./pages/Home/home";
-import Login from "./pages/Login/login"; // Adjusted import path
-import Signup from "./pages/Signup/signup"; // Adjusted import path
-import Profile from "./pages/Profilepage/profilepage"; // Adjusted import path
+import Login from "./pages/Login/login"; 
+import Signup from "./pages/Signup/signup"; 
+import Profile from "./pages/Profilepage/profilepage"; 
 
 const App = () => {
   return (

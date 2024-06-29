@@ -102,9 +102,9 @@ const Login = () => {
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg focus:outline-none focus:shadow-outline"
                 type="submit"
                 style={{
-                  width: "100%", // Make the Login button same size as Google button
-                  maxWidth: "280px", // Control the max width of the button
-                  height: "48px", // Adjust height for the button
+                  width: "100%", 
+                  maxWidth: "280px", 
+                  height: "48px", 
                 }}
               >
                 Login
@@ -115,9 +115,9 @@ const Login = () => {
                 className="bg-white hover:bg-gray-100 text-gray-800 font-bold py-2 px-6 border border-gray-400 rounded-lg shadow focus:outline-none focus:shadow-outline flex items-center justify-center"
                 type="button"
                 style={{
-                  width: "100%", // Make the Google button larger
-                  maxWidth: "280px", // Control the max width of the Google button
-                  height: "48px", // Adjust height for the Google button
+                  width: "100%", 
+                  maxWidth: "280px", 
+                  height: "48px", 
                 }}
               >
                 <FcGoogle className="mr-2" /> Login with Google

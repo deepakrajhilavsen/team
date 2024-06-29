@@ -118,9 +118,9 @@ const Signup = () => {
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg focus:outline-none focus:shadow-outline"
                 type="submit"
                 style={{
-                  width: "100%", // Adjust button width
-                  maxWidth: "280px", // Control max width
-                  height: "48px", // Adjust button height
+                  width: "100%", 
+                  maxWidth: "280px", 
+                  height: "48px", 
                 }}
               >
                 Sign up
@@ -131,9 +131,9 @@ const Signup = () => {
                 className="bg-white hover:bg-gray-100 text-gray-800 font-bold py-2 px-6 border border-gray-400 rounded-lg shadow focus:outline-none focus:shadow-outline flex items-center justify-center"
                 type="button"
                 style={{
-                  width: "100%", // Adjust button width
-                  maxWidth: "280px", // Control max width
-                  height: "48px", // Adjust button height
+                  width: "100%", 
+                  maxWidth: "280px", 
+                  height: "48px", 
                 }}
               >
                 <FcGoogle className="mr-2" /> Sign up with Google
