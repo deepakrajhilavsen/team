@@ -1,42 +1,32 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { Provider } from 'react-redux';
-import store from './store';
-import Navbar from './components/Navbar/Navbar';
-import Search from './components/SearchDiv/Search';
-import Jobs from './components/JobDiv/Jobs';
-import Value from './components/ValueDiv/Value';
-import Footer from './components/FooterDiv/Footer';
-import Profile from './components/Profile/profile';
+import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Provider } from "react-redux";
+import store from "./Store/store"; // Adjusted import path to the store folder
+import Home from "./pages/Home/home";
+import Login from "./pages/Login/login"; // Adjusted import path
+import Signup from "./pages/Signup/signup"; // Adjusted import path
+import Profile from "./pages/Profilepage/profilepage"; // Adjusted import path
 
 const App = () => {
   return (
     <Provider store={store}>
       <BrowserRouter>
         <Routes>
+          <Route path="/login" element={<Login />} />
           <Route path="/" element={<Home />} />
-          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/create-profile" element={<Profile />} />
+          <Route path="/signup" element={<Signup />} />
+          {/* <Route path="/user/*">
+            <Route path="get-profile" element />
+            <Route path="update-password" />
+          </Route>
+          <Route path="/error/*">
+            <Route path="server-error" element={}/>
+          </Route> */}
         </Routes>
       </BrowserRouter>
     </Provider>
   );
 };
-
-const Home = () => (
-  <div className='w-[85%] m-auto bg-white'>
-    <Navbar />
-    <Search />
-    <Jobs />
-    <Value />
-    <Footer />
-  </div>
-);
-
-const ProfilePage = () => (
-  <div className='w-[85%] m-auto bg-white'>
-    <Profile />
-    {/* No need to render the Navbar here */}
-  </div>
-);
 
 export default App;
