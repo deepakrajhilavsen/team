@@ -5,15 +5,16 @@ const hashPassword = require("../utils/hashPassword");
 const createAuth = require("../db/createAuth");
 const generateToken = require("../utils/generateToken");
 
-const registerService = async (username, password, req, res, callback) => {
+const registerService = async (username, password, role, req, res, callback) => {
   if (
     globalValidator(registerValidator, {
       username,
       password,
+      role
     })
   ) {
     const hash = await hashPassword(password);
-    const newUser = await createAuth(username, hash);
+    const newUser = await createAuth(username, hash, role);
     passport.authenticate("local", { session: false })(
       req,
       res,

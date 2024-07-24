@@ -7,7 +7,7 @@ const generateToken = (id, username) => {
       username: username,
     },
     process.env.SECRET,
-    { expiresIn: "1h" }
+    { expiresIn: process.env.JWT_EXPIRY_IN }
   );
 
   return accesToken;

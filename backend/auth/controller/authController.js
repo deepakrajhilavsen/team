@@ -11,15 +11,16 @@ const loginService = require("../services/loginService");
 const registerService = require("../services/registerService");
 
 const registerUser = asyncErrorHandler(async (req, res, next) => {
-  const { username, password } = req.body;
-  await registerService(username, password, req, res, (err, result) => {
+  const { username, password, role } = req.body;
+  await registerService(username, password, role, req, res, (err, result) => {
     if (err) {
       return next(err);
     }
 
     res.cookie("accessToken", result.accessToken, {
       httpOnly: true,
-      secure: false, // change secure to true, made it false to test on localhost
+      secure: process.env.HTTP_SECURE,
+      sameSite: "none",
     });
     res.status(REGISTER_SUCCESS.status).send({
       message: REGISTER_SUCCESS.message,
@@ -38,7 +39,8 @@ const loginUser = asyncErrorHandler(async (req, res, next) => {
 
     res.cookie("accessToken", result.accessToken, {
       httpOnly: true,
-      secure: false, // change secure to true, made it false to test on localhost
+      secure: process.env.HTTP_SECURE,
+      sameSite: "none",
     });
     res.status(LOGIN_SUCCESS.status).send({
       message: LOGIN_SUCCESS.message,
@@ -55,17 +57,31 @@ const googleSignIn = asyncErrorHandler(async (req, res, next) => {
 
     res.cookie("accessToken", result.accessToken, {
       httpOnly: true,
-      secure: false, // change secure to true, made it false to test on localhost
+      secure: process.env.HTTP_SECURE,
+      sameSite: "none",
     });
-    res.status(LOGIN_SUCCESS.status).send({
-      message: LOGIN_SUCCESS.message,
-      user: result.user,
-    });
+
+    res.send(`
+      <!DOCTYPE html>
+      <html>
+      <head><title>Auth Screen</title></head>
+      <body>
+        <script>
+            if (window.opener) {
+              window.opener.postMessage(${JSON.stringify({
+                user: result.user,
+              })}, '*');
+            }
+            window.close();
+        </script>
+      </body>
+      </html>
+    `);
   });
 });
 
 const verifyToken = (req, res) => {
-  const { token } = req.body;
+  const token = req.cookies.accessToken;
 
   try {
     const decoded = jwt.verify(token, process.env.SECRET);
@@ -77,4 +93,9 @@ const verifyToken = (req, res) => {
   }
 };
 
-module.exports = { registerUser, loginUser, googleSignIn, verifyToken };
+module.exports = {
+  registerUser,
+  loginUser,
+  googleSignIn,
+  verifyToken,
+};

@@ -11,9 +11,9 @@ module.exports = {
     message: "Logged in successfully",
   },
 
-  RESPONSE_EDIT_SUCCESS: {
+  UPDATE_SUCCESS: {
     status: 200,
-    message: "Response modified successfully",
+    message: "Updated successfully",
   },
 
   FETCH_SUCCESS: {

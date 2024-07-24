@@ -1,7 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
-const mongoose = require("mongoose");
+const { default: mongoose } = require("mongoose");
 const cors = require("cors");
 const passport = require("passport");
 const { credentials } = require("./config/passport.config");
@@ -11,6 +11,7 @@ const globalErrorHandler = require("./Utils/globalErrorHandler");
 const authRouter = require("./auth/router/routes");
 const XSSValidateMW = require("./middlewares/inputValidator");
 const cookieParser = require("cookie-parser");
+const userRouter = require("./user/router/routes");
 
 credentials(passport);
 
@@ -18,7 +19,8 @@ const app = express();
 
 app.use(
   cors({
-    origin: "*",
+    origin: process.env.ALLOWED_ORIGIN,
+    credentials: true,
   })
 );
 
@@ -29,6 +31,7 @@ app.use(cookieParser());
 app.use(XSSValidateMW);
 
 app.use("/auth", authRouter);
+app.use("/user", userRouter);
 
 app.all("*", (req, res, next) => {
   const error = new CustomError(NOT_FOUND.message, NOT_FOUND.status);

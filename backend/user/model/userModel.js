@@ -1,6 +1,4 @@
-const mongoose = require("mongoose");
-const passportLocalMongoose = require("passport-local-mongoose");
-const findOrCreate = require("mongoose-findorcreate");
+const { default: mongoose } = require("mongoose");
 const qualificationSchema = require("../schema/qualificationSchema");
 const experienceSchema = require("../schema/experienceSchema");
 
@@ -39,9 +37,6 @@ const userSchema = new mongoose.Schema({
     type: String,
   },
 });
-
-userSchema.plugin(passportLocalMongoose);
-userSchema.plugin(findOrCreate);
 
 const User = mongoose.model("User", userSchema);
 

@@ -44,6 +44,8 @@ const crossSiteScriptValidator = (data, key) => {
 };
 
 const XSSValidateObj = (object) => {
+  if (object === null) return;
+
   Object.entries(object).forEach((entries) => {
     const [key, value] = entries;
     if (typeof value === "string" || typeof value === "number") {
@@ -56,14 +58,24 @@ const XSSValidateObj = (object) => {
 
 const XSSValidateMW = (req, res, next) => {
   try {
-    if (urlWhiteList.some((pattern) => pattern.test(req.originalUrl))) {
-      return next();
-    }
+    // if (urlWhiteList.some((pattern) => pattern.test(req.originalUrl))) {
+    //   return next();
+    // }
     const { body = {}, params = {}, query = {}, headers = {} } = req;
+
+    const vulnerableHeaders = ["origin", "referer"];
+
+    const headersToValidate = Object.entries(headers)
+      .filter(([key]) => vulnerableHeaders.includes(key.toLowerCase()))
+      .reduce((acc, [key, value]) => {
+        acc[key] = value;
+        return acc;
+      }, {});
+
     XSSValidateObj(body);
     XSSValidateObj(params);
     XSSValidateObj(query);
-    XSSValidateObj(headers);
+    XSSValidateObj(headersToValidate);
     next();
   } catch (err) {
     next(err);

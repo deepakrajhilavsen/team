@@ -1,5 +1,4 @@
-const mongoose = require("mongoose");
-const passportLocalMongoose = require("passport-local-mongoose");
+const { default: mongoose } = require("mongoose");
 const findOrCreate = require("mongoose-findorcreate");
 const { ROLES } = require("../../Utils/constants");
 
@@ -21,6 +20,8 @@ const authSchema = new mongoose.Schema({
   role: {
     type: String,
     enum: Object.values(ROLES),
+    required: true,
+    default: ROLES.user,
   },
   googleId: {
     type: String,
@@ -29,7 +30,6 @@ const authSchema = new mongoose.Schema({
   },
 });
 
-authSchema.plugin(passportLocalMongoose);
 authSchema.plugin(findOrCreate);
 
 const Auth = mongoose.model("Auth", authSchema);

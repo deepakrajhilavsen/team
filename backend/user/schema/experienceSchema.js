@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const { default: mongoose } = require("mongoose");
 
 const experienceSchema = new mongoose.Schema(
   {
@@ -6,21 +6,23 @@ const experienceSchema = new mongoose.Schema(
       type: String,
       enum: ["Fresher", "Student", "Experienced"],
     },
-    currentJob: {
-      role: String,
-      company: String,
-      from: Date,
-      CTC: Number,
-    },
-    previousJobs: [
+    jobHistory: [
       {
         role: String,
         company: String,
+        startDate: Date,
+        current: Boolean,
+        endDate: {
+          type: Date,
+          validate: {
+            validator: (value) => {
+              if (this.current) value = null;
+              else value instanceof Date;
+            },
+          },
+        },
       },
     ],
-    yearsOfExperience: {
-      type: Number,
-    },
   },
   { _id: false }
 );

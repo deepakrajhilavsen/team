@@ -1,4 +1,3 @@
-require("dotenv").config();
 const LocalStrategy = require("passport-local").Strategy;
 const bcrypt = require("bcryptjs");
 const { Strategy: JwtStrategy, ExtractJwt } = require("passport-jwt");
@@ -58,7 +57,6 @@ const credentials = async (passport) => {
 
   passport.use(
     new JwtStrategy(options, (jwt_payload, done) => {
-      console.log(jwt_payload);
       try {
         if (jwt_payload) {
           const user = jwt_payload;
@@ -81,9 +79,13 @@ const credentials = async (passport) => {
       },
       async (accessToken, refreshToken, profile, done) => {
         try {
-          const user = await findOrCreateGoogleAuth(profile);
-          user.profilePhoto = profile.photos[0].value;
-          user.name = profile.displayName;
+          const googleUser = await findOrCreateGoogleAuth(profile);
+          const user = {
+            _id: googleUser._id,
+            username: googleUser.username,
+            profilePhoto: profile.photos[0].value,
+            name: profile.displayName,
+          };
           return done(null, user);
         } catch (err) {
           return done(err);
